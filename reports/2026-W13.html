@@ -41,7 +41,7 @@
 
     /* ─── Header ─── */
     .header {
-      background: linear-gradient(135deg, #1a0a00 0%, #151515 50%, #0d0d0d 100%);
+      background: #111111;
       border-bottom: 1px solid var(--border);
       padding: 0 40px;
       display: flex;
@@ -391,7 +391,7 @@
 
     /* ─── AI Insights ─── */
     .insights-card {
-      background: linear-gradient(135deg, #1a0d00 0%, #1a1a1a 100%);
+      background: var(--card);
       border: 1px solid var(--orange-dark);
       border-radius: var(--radius);
       padding: 24px;
@@ -506,8 +506,8 @@
     </div>
   </div>
   <div class="header-meta">
-    <span class="date-range">Mar 23 – 29, 2026</span>
-    <span class="period-badge">W13 · Weekly Report</span>
+    <span class="date-range">Jan 1 – Mar 29, 2026</span>
+    <span class="period-badge">Q1 2026 · Analytics Report</span>
     <span class="demo-badge">DEMO</span>
   </div>
 </header>
@@ -516,38 +516,46 @@
 
   <!-- ─── KPI CARDS ─── -->
   <div class="section">
-    <div class="section-title">Key Metrics — This Week</div>
-    <div class="kpi-grid">
+    <div class="section-title">Key Metrics — Jan–Mar 2026 · iOS + Android</div>
+    <div class="kpi-grid" style="grid-template-columns: repeat(5, 1fr);">
 
       <div class="kpi-card">
         <div class="kpi-label">Daily Active Users (avg)</div>
-        <div class="kpi-value">152</div>
-        <span class="kpi-delta up">▲ +0.7% vs W12</span>
-        <div class="kpi-sub">Peak this week: 209</div>
+        <div class="kpi-value">791</div>
+        <span class="kpi-delta flat">— peak: 1,631</span>
+        <div class="kpi-sub">iOS 93.3% · Android 6.7%</div>
         <div class="kpi-icon">👥</div>
       </div>
 
       <div class="kpi-card">
-        <div class="kpi-label">Weekly Active Users</div>
-        <div class="kpi-value accent">1,089</div>
-        <span class="kpi-delta up">▲ +2.6% vs W12</span>
-        <div class="kpi-sub">First uptick in 5 weeks</div>
+        <div class="kpi-label">Weekly Active Users (avg)</div>
+        <div class="kpi-value accent">3,005</div>
+        <span class="kpi-delta flat">— peak W08: 2,935 iOS</span>
+        <div class="kpi-sub">MAU: 16,151 total</div>
         <div class="kpi-icon">📈</div>
       </div>
 
       <div class="kpi-card">
+        <div class="kpi-label">MAU (monthly active)</div>
+        <div class="kpi-value">16,151</div>
+        <span class="kpi-delta flat">— across all platforms</span>
+        <div class="kpi-sub">Phone 82.1% · Tablet 17.9%</div>
+        <div class="kpi-icon">📱</div>
+      </div>
+
+      <div class="kpi-card">
         <div class="kpi-label">Total Games Played</div>
-        <div class="kpi-value">3,942</div>
-        <span class="kpi-delta up">▲ +0.8% vs W12</span>
-        <div class="kpi-sub">Avg 4.5 games / active player</div>
+        <div class="kpi-value">111,985</div>
+        <span class="kpi-delta up">9.6 games / active player</span>
+        <div class="kpi-sub">11,654 active players</div>
         <div class="kpi-icon">♟</div>
       </div>
 
       <div class="kpi-card">
         <div class="kpi-label">New Installs</div>
-        <div class="kpi-value">118</div>
-        <span class="kpi-delta down">▼ −18% vs W12</span>
-        <div class="kpi-sub">W07 peak was 677 / week</div>
+        <div class="kpi-value">8,868</div>
+        <span class="kpi-delta flat">— iOS: 7,543 · Android: 1,325</span>
+        <div class="kpi-sub">28.4% never played a game</div>
         <div class="kpi-icon">📲</div>
       </div>
 
@@ -556,42 +564,42 @@
 
   <!-- ─── PERIOD COMPARISON ─── -->
   <div class="section">
-    <div class="section-title">WAU — Period Comparison</div>
+    <div class="section-title">Session Quality — Jan–Mar 2026</div>
     <div class="compare-strip">
       <div class="compare-item">
-        <div class="compare-period">W10</div>
-        <div class="compare-val">1,650</div>
-        <div class="compare-metric-label">WAU</div>
+        <div class="compare-period">Median Session</div>
+        <div class="compare-val current">1m 24s</div>
+        <div class="compare-metric-label">typical session</div>
       </div>
       <div class="compare-divider"></div>
       <div class="compare-item">
-        <div class="compare-period">W11</div>
-        <div class="compare-val">1,380</div>
-        <div class="compare-metric-label">WAU</div>
+        <div class="compare-period">Mean Session</div>
+        <div class="compare-val">7m 42s</div>
+        <div class="compare-metric-label">avg incl. long games</div>
       </div>
       <div class="compare-divider"></div>
       <div class="compare-item">
-        <div class="compare-period">W12</div>
-        <div class="compare-val">1,061</div>
-        <div class="compare-metric-label">WAU</div>
+        <div class="compare-period">Total Sessions</div>
+        <div class="compare-val">105,197</div>
+        <div class="compare-metric-label">all platforms</div>
       </div>
       <div class="compare-divider"></div>
       <div class="compare-item">
-        <div class="compare-period">W13 · NOW</div>
-        <div class="compare-val current">1,089</div>
-        <div class="compare-metric-label">WAU</div>
+        <div class="compare-period">Active Players</div>
+        <div class="compare-val">11,654</div>
+        <div class="compare-metric-label">played ≥1 game</div>
       </div>
       <div class="compare-divider"></div>
       <div class="compare-item">
-        <div class="compare-period">W06–W13 avg</div>
-        <div class="compare-val">1,802</div>
-        <div class="compare-metric-label">WAU</div>
+        <div class="compare-period">Games / Player</div>
+        <div class="compare-val current">9.6</div>
+        <div class="compare-metric-label">avg engagement</div>
       </div>
       <div class="compare-divider"></div>
       <div class="compare-item">
-        <div class="compare-period">Peak (W08)</div>
-        <div class="compare-val">2,935</div>
-        <div class="compare-metric-label">WAU</div>
+        <div class="compare-period">Never Played</div>
+        <div class="compare-val" style="color:var(--red);">28.4%</div>
+        <div class="compare-metric-label">of new installs</div>
       </div>
     </div>
   </div>
@@ -603,7 +611,7 @@
         <div class="chart-header">
           <div>
             <div class="chart-title">DAU & WAU Trend — W06 to W13</div>
-            <div class="chart-subtitle">Weekly active users and daily average</div>
+            <div class="chart-subtitle">iOS · DevToDev weekly data</div>
           </div>
           <div class="chart-legend">
             <div class="legend-item">
@@ -624,33 +632,33 @@
         </div>
         <div class="insight-list">
           <div class="insight-item">
-            <div class="insight-icon">📈</div>
-            <div class="insight-text">
-              <strong>W13 shows the first WAU uptick in 5 weeks</strong> (+2.6%). Too early to call a trend reversal — monitor W14 closely.
-            </div>
-          </div>
-          <div class="insight-item">
             <div class="insight-icon">⚠️</div>
             <div class="insight-text">
-              <span class="warn">Retention cliff at D14→D30</span> (31% → 12%) is the biggest churn risk. Users surviving past week 2 need re-engagement.
+              <span class="warn">Retention cliff at D14→D30</span> (6% → 2.1%) is the biggest churn risk. Users who survive past week 2 need structured re-engagement.
             </div>
           </div>
           <div class="insight-item">
             <div class="insight-icon">♟</div>
             <div class="insight-text">
-              <span class="highlight">Chess.com users retain best</span> — 64.5% D7 vs 51% GoChessAI and 48% F2F. Promote this mode in onboarding.
+              <span class="highlight">Chess.com drives 3× more games per user</span> (17.2 vs 4.2 for F2F). It also shows best D7 retention at 64.5% — prioritise in onboarding.
             </div>
           </div>
           <div class="insight-item">
             <div class="insight-icon">🎯</div>
             <div class="insight-text">
-              <span class="warn">29% of new users never played a single game.</span> Fix the onboarding-to-first-game funnel before next install campaign.
+              <span class="warn">28.4% of new installs never played a single game.</span> The onboarding funnel is broken — fix before the next install campaign.
+            </div>
+          </div>
+          <div class="insight-item">
+            <div class="insight-icon">📱</div>
+            <div class="insight-text">
+              <strong>Mini board is #1 at 45% of games</strong>, Lite at 23%. XR is almost exclusively bot play (87%). Unknown segment (32%) skews to Chess.com — likely older app versions.
             </div>
           </div>
           <div class="insight-item">
             <div class="insight-icon">🌍</div>
             <div class="insight-text">
-              <span class="good">US dominates at 40%</span> of users but Switzerland (4.5%) and Singapore (1.8%) over-index — premium market opportunity.
+              <span class="good">US at 41.7%</span> leads installs, but Switzerland (3.7%) and Singapore (1.7%) over-index on engagement — strong premium market signal.
             </div>
           </div>
         </div>
@@ -666,7 +674,7 @@
         <div class="chart-header">
           <div>
             <div class="chart-title">Retention Funnel</div>
-            <div class="chart-subtitle">February cohort · 7,321 users</div>
+            <div class="chart-subtitle">Jan–Mar cohort · 8,868 installs · iOS + Android</div>
           </div>
         </div>
         <div class="retention-bars">
@@ -677,38 +685,32 @@
             <div class="ret-bar-sublabel">Install</div>
           </div>
           <div class="ret-bar-wrap">
-            <div class="ret-bar-value">55.1%</div>
-            <div class="ret-bar" style="height:55.1%; background:var(--orange); opacity:0.88"></div>
+            <div class="ret-bar-value">31.3%</div>
+            <div class="ret-bar" style="height:31.3%; background:var(--orange); opacity:0.88"></div>
             <div class="ret-bar-label">D1</div>
             <div class="ret-bar-sublabel">Day 1</div>
           </div>
           <div class="ret-bar-wrap">
-            <div class="ret-bar-value">48.6%</div>
-            <div class="ret-bar" style="height:48.6%; background:var(--orange); opacity:0.76"></div>
+            <div class="ret-bar-value">14.0%</div>
+            <div class="ret-bar" style="height:14%; background:var(--orange); opacity:0.72"></div>
             <div class="ret-bar-label">D3</div>
             <div class="ret-bar-sublabel">Day 3</div>
           </div>
           <div class="ret-bar-wrap">
-            <div class="ret-bar-value">41.4%</div>
-            <div class="ret-bar" style="height:41.4%; background:var(--orange); opacity:0.64"></div>
+            <div class="ret-bar-value">9.0%</div>
+            <div class="ret-bar" style="height:9%; background:var(--red); opacity:0.75"></div>
             <div class="ret-bar-label">D7</div>
             <div class="ret-bar-sublabel">Week 1</div>
           </div>
           <div class="ret-bar-wrap">
-            <div class="ret-bar-value">31.3%</div>
-            <div class="ret-bar" style="height:31.3%; background:var(--orange); opacity:0.52"></div>
+            <div class="ret-bar-value">6.0%</div>
+            <div class="ret-bar" style="height:6%; background:var(--red); opacity:0.85"></div>
             <div class="ret-bar-label">D14</div>
             <div class="ret-bar-sublabel">Week 2</div>
           </div>
           <div class="ret-bar-wrap">
-            <div class="ret-bar-value">21.8%</div>
-            <div class="ret-bar" style="height:21.8%; background:var(--red); opacity:0.85"></div>
-            <div class="ret-bar-label">D21</div>
-            <div class="ret-bar-sublabel">Week 3</div>
-          </div>
-          <div class="ret-bar-wrap">
-            <div class="ret-bar-value">11.7%</div>
-            <div class="ret-bar" style="height:11.7%; background:var(--red); opacity:1"></div>
+            <div class="ret-bar-value">2.1%</div>
+            <div class="ret-bar" style="height:2.1%; background:var(--red); opacity:1"></div>
             <div class="ret-bar-label">D30</div>
             <div class="ret-bar-sublabel">Month 1</div>
           </div>
@@ -730,7 +732,7 @@
         <div class="chart-header">
           <div>
             <div class="chart-title">Game Modes</div>
-            <div class="chart-subtitle">All-time · 49,136 games total</div>
+            <div class="chart-subtitle">Jan–Mar 2026 · 111,985 games · iOS + Android</div>
           </div>
         </div>
         <div class="mode-row">
@@ -738,52 +740,65 @@
             <div class="mode-header">
               <span class="mode-name">♟ GoChess AI</span>
               <div class="mode-stats">
-                <span class="mode-stat"><strong>22,980</strong> games</span>
-                <span class="mode-stat"><strong>4,038</strong> users</span>
-                <span class="mode-stat" style="color:var(--text-3)">5.7/user</span>
+                <span class="mode-stat"><strong>52,608</strong> games</span>
+                <span class="mode-stat"><strong>7,894</strong> users</span>
+                <span class="mode-stat" style="color:var(--text-3)">6.7/user</span>
               </div>
             </div>
             <div class="mode-bar-track">
-              <div class="mode-bar-fill" style="width:46.8%; background:var(--orange)"></div>
-            </div>
-          </div>
-          <div class="mode-item">
-            <div class="mode-header">
-              <span class="mode-name">🌐 Chess.com</span>
-              <div class="mode-stats">
-                <span class="mode-stat"><strong>12,657</strong> games</span>
-                <span class="mode-stat"><strong>794</strong> users</span>
-                <span class="mode-stat" style="color:var(--green)">15.9/user ↑</span>
-              </div>
-            </div>
-            <div class="mode-bar-track">
-              <div class="mode-bar-fill" style="width:25.8%; background:#5b9bd5"></div>
+              <div class="mode-bar-fill" style="width:47%; background:var(--orange)"></div>
             </div>
           </div>
           <div class="mode-item">
             <div class="mode-header">
               <span class="mode-name">🤝 Face to Face</span>
               <div class="mode-stats">
-                <span class="mode-stat"><strong>12,025</strong> games</span>
-                <span class="mode-stat"><strong>3,461</strong> users</span>
-                <span class="mode-stat" style="color:var(--text-3)">3.5/user</span>
+                <span class="mode-stat"><strong>28,305</strong> games</span>
+                <span class="mode-stat"><strong>6,771</strong> users</span>
+                <span class="mode-stat" style="color:var(--text-3)">4.2/user</span>
               </div>
             </div>
             <div class="mode-bar-track">
-              <div class="mode-bar-fill" style="width:24.5%; background:#b4b4b4"></div>
+              <div class="mode-bar-fill" style="width:25.3%; background:#b4b4b4"></div>
+            </div>
+          </div>
+          <div class="mode-item">
+            <div class="mode-header">
+              <span class="mode-name">🌐 Chess.com</span>
+              <div class="mode-stats">
+                <span class="mode-stat"><strong>27,561</strong> games</span>
+                <span class="mode-stat"><strong>1,601</strong> users</span>
+                <span class="mode-stat" style="color:var(--green)">17.2/user ↑</span>
+              </div>
+            </div>
+            <div class="mode-bar-track">
+              <div class="mode-bar-fill" style="width:24.6%; background:#5b9bd5"></div>
             </div>
           </div>
           <div class="mode-item">
             <div class="mode-header">
               <span class="mode-name">🐴 Lichess</span>
               <div class="mode-stats">
-                <span class="mode-stat"><strong>1,436</strong> games</span>
-                <span class="mode-stat"><strong>253</strong> users</span>
-                <span class="mode-stat" style="color:var(--text-3)">5.7/user</span>
+                <span class="mode-stat"><strong>3,456</strong> games</span>
+                <span class="mode-stat"><strong>477</strong> users</span>
+                <span class="mode-stat" style="color:var(--text-3)">7.2/user</span>
               </div>
             </div>
             <div class="mode-bar-track">
-              <div class="mode-bar-fill" style="width:2.9%; background:#7e7e7e"></div>
+              <div class="mode-bar-fill" style="width:3.1%; background:#7e7e7e"></div>
+            </div>
+          </div>
+          <div class="mode-item">
+            <div class="mode-header">
+              <span class="mode-name">🤖 Lichess AI</span>
+              <div class="mode-stats">
+                <span class="mode-stat"><strong>55</strong> games</span>
+                <span class="mode-stat"><strong>13</strong> users</span>
+                <span class="mode-stat" style="color:var(--text-3)">4.2/user</span>
+              </div>
+            </div>
+            <div class="mode-bar-track">
+              <div class="mode-bar-fill" style="width:0.05%; background:#555"></div>
             </div>
           </div>
         </div>
@@ -851,70 +866,70 @@
             <div class="country-flag">🇺🇸</div>
             <div class="country-name">United States</div>
             <div class="country-bar-track"><div class="country-bar-fill" style="width:100%"></div></div>
-            <div class="country-pct">39.9%</div>
+            <div class="country-pct">41.7%</div>
           </div>
           <div class="country-row">
             <div class="country-rank">2</div>
             <div class="country-flag">🇨🇦</div>
             <div class="country-name">Canada</div>
-            <div class="country-bar-track"><div class="country-bar-fill" style="width:15%"></div></div>
-            <div class="country-pct">6.0%</div>
+            <div class="country-bar-track"><div class="country-bar-fill" style="width:14.6%"></div></div>
+            <div class="country-pct">6.1%</div>
           </div>
           <div class="country-row">
             <div class="country-rank">3</div>
             <div class="country-flag">🇬🇧</div>
             <div class="country-name">United Kingdom</div>
-            <div class="country-bar-track"><div class="country-bar-fill" style="width:11.8%"></div></div>
-            <div class="country-pct">4.7%</div>
-          </div>
-          <div class="country-row">
-            <div class="country-rank">4</div>
-            <div class="country-flag">🇨🇭</div>
-            <div class="country-name">Switzerland</div>
-            <div class="country-bar-track"><div class="country-bar-fill" style="width:11.3%"></div></div>
+            <div class="country-bar-track"><div class="country-bar-fill" style="width:10.8%"></div></div>
             <div class="country-pct">4.5%</div>
           </div>
           <div class="country-row">
-            <div class="country-rank">5</div>
+            <div class="country-rank">4</div>
             <div class="country-flag">🇦🇺</div>
             <div class="country-name">Australia</div>
-            <div class="country-bar-track"><div class="country-bar-fill" style="width:9.8%"></div></div>
-            <div class="country-pct">3.9%</div>
+            <div class="country-bar-track"><div class="country-bar-fill" style="width:9.6%"></div></div>
+            <div class="country-pct">4.0%</div>
+          </div>
+          <div class="country-row">
+            <div class="country-rank">5</div>
+            <div class="country-flag">🇨🇭</div>
+            <div class="country-name">Switzerland</div>
+            <div class="country-bar-track"><div class="country-bar-fill" style="width:8.9%"></div></div>
+            <div class="country-pct">3.7%</div>
           </div>
           <div class="country-row">
             <div class="country-rank">6</div>
-            <div class="country-flag">🇳🇱</div>
-            <div class="country-name">Netherlands</div>
-            <div class="country-bar-track"><div class="country-bar-fill" style="width:6%"></div></div>
-            <div class="country-pct">2.4%</div>
+            <div class="country-flag">🇲🇽</div>
+            <div class="country-name">Mexico</div>
+            <div class="country-bar-track"><div class="country-bar-fill" style="width:6.5%"></div></div>
+            <div class="country-pct">2.7%</div>
           </div>
           <div class="country-row">
             <div class="country-rank">7</div>
-            <div class="country-flag">🇲🇽</div>
-            <div class="country-name">Mexico</div>
-            <div class="country-bar-track"><div class="country-bar-fill" style="width:6%"></div></div>
+            <div class="country-flag">🇩🇪</div>
+            <div class="country-name">Germany</div>
+            <div class="country-bar-track"><div class="country-bar-fill" style="width:5.8%"></div></div>
             <div class="country-pct">2.4%</div>
           </div>
           <div class="country-row">
             <div class="country-rank">8</div>
-            <div class="country-flag">🇩🇪</div>
-            <div class="country-name">Germany</div>
-            <div class="country-bar-track"><div class="country-bar-fill" style="width:5.8%"></div></div>
-            <div class="country-pct">2.3%</div>
+            <div class="country-flag">🇳🇱</div>
+            <div class="country-name">Netherlands</div>
+            <div class="country-bar-track"><div class="country-bar-fill" style="width:4.8%"></div></div>
+            <div class="country-pct">2.0%</div>
           </div>
           <div class="country-row">
             <div class="country-rank">9</div>
             <div class="country-flag">🇫🇷</div>
             <div class="country-name">France</div>
-            <div class="country-bar-track"><div class="country-bar-fill" style="width:5.3%"></div></div>
-            <div class="country-pct">2.1%</div>
+            <div class="country-bar-track"><div class="country-bar-fill" style="width:4.6%"></div></div>
+            <div class="country-pct">1.9%</div>
           </div>
           <div class="country-row">
             <div class="country-rank">10</div>
             <div class="country-flag">🇸🇬</div>
             <div class="country-name">Singapore</div>
-            <div class="country-bar-track"><div class="country-bar-fill" style="width:4.5%"></div></div>
-            <div class="country-pct">1.8%</div>
+            <div class="country-bar-track"><div class="country-bar-fill" style="width:4.1%"></div></div>
+            <div class="country-pct">1.7%</div>
           </div>
         </div>
       </div>
@@ -929,24 +944,23 @@
         <div class="session-grid">
           <div class="session-item">
             <div class="session-label">Median Session</div>
-            <div class="session-value">25<span style="font-size:16px; font-weight:400; color:var(--text-2)">s</span></div>
-            <div class="session-desc">Quick opens &amp; check-ins</div>
+            <div class="session-value">1<span style="font-size:16px; font-weight:400; color:var(--text-2)">m</span> 24<span style="font-size:16px; font-weight:400; color:var(--text-2)">s</span></div>
+            <div class="session-desc">Typical quick check-in</div>
           </div>
           <div class="session-item">
             <div class="session-label">Mean Session</div>
-            <div class="session-value">5.6<span style="font-size:16px; font-weight:400; color:var(--text-2)">min</span></div>
+            <div class="session-value">7<span style="font-size:16px; font-weight:400; color:var(--text-2)">m</span> 42<span style="font-size:16px; font-weight:400; color:var(--text-2)">s</span></div>
             <div class="session-desc">Full game sessions pull avg up</div>
           </div>
           <div class="session-item">
-            <div class="session-label">Sessions per User / Week</div>
-            <div class="session-value" style="font-size:28px;">~10.5</div>
-            <div class="session-desc">Stable across all periods</div>
+            <div class="session-label">Total Sessions</div>
+            <div class="session-value" style="font-size:28px;">105,197</div>
+            <div class="session-desc">Jan–Mar 2026, all platforms</div>
           </div>
         </div>
         <div style="margin-top:16px; padding:12px 16px; background:var(--orange-dim); border:1px solid rgba(254,95,0,0.2); border-radius:var(--radius-sm);">
           <div style="font-size:12px; color:var(--text-2); line-height:1.5;">
-            <strong style="color:var(--orange)">Bimodal pattern:</strong> most sessions are quick
-            &lt;30s pings (app check), but engaged users stay 10–30min per full game.
+            <strong style="color:var(--orange)">Bimodal pattern:</strong> median &lt;2min for quick check-ins, but engaged game sessions run 10–30min, pulling the mean to 7m 42s.
           </div>
         </div>
       </div>
@@ -970,6 +984,111 @@
             <div style="font-size:22px; font-weight:700; color:var(--orange);">118</div>
             <div style="font-size:10px; color:var(--text-3);">W13</div>
           </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ─── DEVICE BREAKDOWN + BOARD TYPES ─── -->
+  <div class="section">
+    <div class="section-title">Device & Platform Split</div>
+    <div class="row-2">
+
+      <div class="chart-card">
+        <div class="chart-header">
+          <div>
+            <div class="chart-title">Platform Breakdown</div>
+            <div class="chart-subtitle">Jan–Mar 2026 · 17,094 total users</div>
+          </div>
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:4px;">
+          <div style="background:var(--card-2); border-radius:var(--radius-sm); padding:16px; text-align:center;">
+            <div style="font-size:11px; color:var(--text-3); text-transform:uppercase; letter-spacing:0.8px; margin-bottom:6px;">iOS</div>
+            <div style="font-size:32px; font-weight:700; color:var(--orange);">93.3%</div>
+            <div style="font-size:12px; color:var(--text-2); margin-top:4px;">15,956 users</div>
+          </div>
+          <div style="background:var(--card-2); border-radius:var(--radius-sm); padding:16px; text-align:center;">
+            <div style="font-size:11px; color:var(--text-3); text-transform:uppercase; letter-spacing:0.8px; margin-bottom:6px;">Android</div>
+            <div style="font-size:32px; font-weight:700; color:var(--text-2);">6.7%</div>
+            <div style="font-size:12px; color:var(--text-2); margin-top:4px;">1,138 users</div>
+          </div>
+          <div style="background:var(--card-2); border-radius:var(--radius-sm); padding:16px; text-align:center;">
+            <div style="font-size:11px; color:var(--text-3); text-transform:uppercase; letter-spacing:0.8px; margin-bottom:6px;">Phone</div>
+            <div style="font-size:32px; font-weight:700; color:var(--text-1);">82.1%</div>
+            <div style="font-size:12px; color:var(--text-2); margin-top:4px;">14,027 users</div>
+          </div>
+          <div style="background:var(--card-2); border-radius:var(--radius-sm); padding:16px; text-align:center;">
+            <div style="font-size:11px; color:var(--text-3); text-transform:uppercase; letter-spacing:0.8px; margin-bottom:6px;">Tablet</div>
+            <div style="font-size:32px; font-weight:700; color:var(--text-1);">17.9%</div>
+            <div style="font-size:12px; color:var(--text-2); margin-top:4px;">3,067 users</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="chart-card">
+        <div class="chart-header">
+          <div>
+            <div class="chart-title">Board Type Usage</div>
+            <div class="chart-subtitle">177,977 game_start events · Jan–Mar 2026</div>
+          </div>
+        </div>
+        <div class="mode-row">
+          <div class="mode-item">
+            <div class="mode-header">
+              <span class="mode-name">♟ Mini</span>
+              <div class="mode-stats">
+                <span class="mode-stat"><strong>80,227</strong> games</span>
+                <span class="mode-stat"><strong>7,696</strong> users</span>
+                <span class="mode-stat" style="color:var(--text-3)">3.5/user/mo</span>
+              </div>
+            </div>
+            <div class="mode-bar-track">
+              <div class="mode-bar-fill" style="width:45.1%; background:var(--orange)"></div>
+            </div>
+          </div>
+          <div class="mode-item">
+            <div class="mode-header">
+              <span class="mode-name">♟ Lite</span>
+              <div class="mode-stats">
+                <span class="mode-stat"><strong>41,048</strong> games</span>
+                <span class="mode-stat"><strong>4,171</strong> users</span>
+                <span class="mode-stat" style="color:var(--text-3)">3.3/user/mo</span>
+              </div>
+            </div>
+            <div class="mode-bar-track">
+              <div class="mode-bar-fill" style="width:23.1%; background:#5b9bd5"></div>
+            </div>
+          </div>
+          <div class="mode-item">
+            <div class="mode-header">
+              <span class="mode-name">♟ No Board / Unknown</span>
+              <div class="mode-stats">
+                <span class="mode-stat"><strong>56,564</strong> games</span>
+                <span class="mode-stat"><strong>7,359</strong> users</span>
+                <span class="mode-stat" style="color:var(--text-3)">2.6/user/mo</span>
+              </div>
+            </div>
+            <div class="mode-bar-track">
+              <div class="mode-bar-fill" style="width:31.8%; background:#7e7e7e"></div>
+            </div>
+          </div>
+          <div class="mode-item">
+            <div class="mode-header">
+              <span class="mode-name">🤖 XR</span>
+              <div class="mode-stats">
+                <span class="mode-stat"><strong>138</strong> games</span>
+                <span class="mode-stat"><strong>13</strong> users</span>
+                <span class="mode-stat" style="color:var(--text-3)">3.5/user/mo</span>
+              </div>
+            </div>
+            <div class="mode-bar-track">
+              <div class="mode-bar-fill" style="width:0.1%; background:#555"></div>
+            </div>
+          </div>
+        </div>
+        <div style="margin-top:14px; background:var(--card-2); border-radius:var(--radius-sm); padding:10px 14px; font-size:11px; color:var(--text-3); line-height:1.5;">
+          Mini &amp; Lite: ~48% bot, ~33% F2F, ~16% online · XR: 87% bot · Unknown: skews 25% Chess.com (older app versions)
         </div>
       </div>
 
@@ -1011,7 +1130,7 @@
 
 <!-- ─── FOOTER ─── -->
 <div class="footer">
-  GoChess Analytics Pipeline · Auto-generated report for W13 (Mar 23–29, 2026) ·
+  GoChess Analytics Pipeline · Q1 2026 Report (Jan 1 – Mar 29, 2026) · iOS + Android ·
   <a href="https://lookerstudio.google.com/reporting/50a3fc0a-fd59-4c85-be2c-ea3855ae9008" target="_blank">Live Dashboard →</a>
   &nbsp;·&nbsp;
   <a href="https://github.com/AKparticula/gochess-analytics" target="_blank">GitHub →</a>
