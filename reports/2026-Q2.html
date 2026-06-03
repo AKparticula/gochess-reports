@@ -313,7 +313,7 @@
       <div class="compare-divider"></div>
       <div class="compare-item">
         <div class="compare-period">App-Only Games</div>
-        <div class="compare-val" style="color:var(--red)">32.6%</div>
+        <div class="compare-val" style="color:var(--red)">8.7%</div>
         <div class="compare-metric-label">no board connected</div>
       </div>
     </div>
@@ -355,12 +355,12 @@
 
           <div class="insight-item">
             <div class="insight-icon">📱</div>
-            <div class="insight-text"><span class="warn">32.6% of game sessions are started without a connected GoChess board</span> (91,642 games). 13.2% of active players have <em>never</em> connected a board — likely pre-purchase evaluators or users with connection issues.</div>
+            <div class="insight-text"><span class="warn">8.7% of game sessions are started without a connected GoChess board</span> (24,477 games). 13.2% of active players have <em>never</em> connected a board — likely pre-purchase evaluators or users with connection issues.</div>
           </div>
 
           <div class="insight-item">
             <div class="insight-icon">📱</div>
-            <div class="insight-text"><strong>Mini board is #1 at 46% of game_start events.</strong> The Unknown segment (older app versions missing board_type) skews toward Chess.com.</div>
+            <div class="insight-text"><strong>Mini board is #1 at 62% of game_start events</strong> (after backfilling 23.9% of blank board_type events to each user's primary board). Remaining "Unknown" users have never recorded a board_type — see Board Type Usage card.</div>
           </div>
 
           <div class="insight-item">
@@ -673,57 +673,57 @@
             <div class="mode-header">
               <span class="mode-name">♟ Mini</span>
               <div class="mode-stats">
-                <span class="mode-stat"><strong>129,412</strong> games</span>
+                <span class="mode-stat"><strong>174,346</strong> games</span>
                 <span class="mode-stat"><strong>11,042</strong> users</span>
-                <span class="mode-stat" style="color:var(--text-3)">11.7/user/mo</span>
+                <span class="mode-stat" style="color:var(--text-3)">15.8/user/mo</span>
               </div>
             </div>
             <div class="mode-bar-track">
-              <div class="mode-bar-fill" style="width:46.0%; background:#fe5f00"></div>
-            </div>
-          </div>
-          <div class="mode-item">
-            <div class="mode-header">
-              <span class="mode-name">♟ Unknown</span>
-              <div class="mode-stats">
-                <span class="mode-stat"><strong>91,642</strong> games</span>
-                <span class="mode-stat"><strong>10,659</strong> users</span>
-                <span class="mode-stat" style="color:var(--text-3)">8.6/user/mo</span>
-              </div>
-            </div>
-            <div class="mode-bar-track">
-              <div class="mode-bar-fill" style="width:32.6%; background:#7e7e7e"></div>
+              <div class="mode-bar-fill" style="width:61.9%; background:#fe5f00"></div>
             </div>
           </div>
           <div class="mode-item">
             <div class="mode-header">
               <span class="mode-name">♟ Lite</span>
               <div class="mode-stats">
-                <span class="mode-stat"><strong>59,495</strong> games</span>
+                <span class="mode-stat"><strong>81,648</strong> games</span>
                 <span class="mode-stat"><strong>5,593</strong> users</span>
-                <span class="mode-stat" style="color:var(--text-3)">10.6/user/mo</span>
+                <span class="mode-stat" style="color:var(--text-3)">14.6/user/mo</span>
               </div>
             </div>
             <div class="mode-bar-track">
-              <div class="mode-bar-fill" style="width:21.1%; background:#5b9bd5"></div>
+              <div class="mode-bar-fill" style="width:29.0%; background:#5b9bd5"></div>
+            </div>
+          </div>
+          <div class="mode-item">
+            <div class="mode-header">
+              <span class="mode-name">♟ Unknown</span>
+              <div class="mode-stats">
+                <span class="mode-stat"><strong>24,477</strong> games</span>
+                <span class="mode-stat"><strong>2,519</strong> users</span>
+                <span class="mode-stat" style="color:var(--text-3)">9.7/user/mo</span>
+              </div>
+            </div>
+            <div class="mode-bar-track">
+              <div class="mode-bar-fill" style="width:8.7%; background:#7e7e7e"></div>
             </div>
           </div>
           <div class="mode-item">
             <div class="mode-header">
               <span class="mode-name">🤖 XR</span>
               <div class="mode-stats">
-                <span class="mode-stat"><strong>915</strong> games</span>
+                <span class="mode-stat"><strong>993</strong> games</span>
                 <span class="mode-stat"><strong>73</strong> users</span>
-                <span class="mode-stat" style="color:var(--text-3)">12.5/user/mo</span>
+                <span class="mode-stat" style="color:var(--text-3)">13.6/user/mo</span>
               </div>
             </div>
             <div class="mode-bar-track">
-              <div class="mode-bar-fill" style="width:0.3%; background:#555555"></div>
+              <div class="mode-bar-fill" style="width:0.4%; background:#555555"></div>
             </div>
           </div>
         </div>
         <div style="margin-top:14px; background:var(--card-2); border-radius:var(--radius-sm); padding:10px 14px; font-size:11px; color:var(--text-3); line-height:1.5;">
-          Mini &amp; Lite: ~48% bot, ~33% F2F, ~16% online · XR: predominantly bot play · Unknown: skews toward Chess.com (older app versions without board_type)
+          <strong style='color:var(--text-2)'>Data quality:</strong> 67,165 events (23.9%) had blank <code>board_type</code> from a known SDK bug (affects ~30% of online-play game_starts in every app version, not just old builds) — these were reassigned to the user's primary board based on their history. Remaining 'Unknown' = users who have <em>never</em> recorded a board_type event.
         </div>
       </div>
     </div>
@@ -749,40 +749,40 @@
         <tbody>
           <tr>
             <td class="row-label">Mini</td>
-            <td class="row-max">49.6%<span class="count">64,213</span></td>
-            <td>31.3%<span class="count">40,461</span></td>
-            <td>16.5%<span class="count">21,355</span></td>
-            <td>2.6%<span class="count">3,351</span></td>
-            <td class="total-cell">129,380</td>
+            <td class="row-max">50.2%<span class="count">87,507</span></td>
+            <td>27.9%<span class="count">48,697</span></td>
+            <td>19.2%<span class="count">33,501</span></td>
+            <td>2.6%<span class="count">4,603</span></td>
+            <td class="total-cell">174,308</td>
           </tr>
           <tr>
             <td class="row-label">Lite</td>
-            <td class="row-max">46.5%<span class="count">27,641</span></td>
-            <td>35.9%<span class="count">21,330</span></td>
-            <td>15.4%<span class="count">9,160</span></td>
-            <td>2.3%<span class="count">1,361</span></td>
-            <td class="total-cell">59,492</td>
+            <td class="row-max">48.7%<span class="count">39,743</span></td>
+            <td>31.7%<span class="count">25,878</span></td>
+            <td>17.6%<span class="count">14,372</span></td>
+            <td>2.0%<span class="count">1,652</span></td>
+            <td class="total-cell">81,645</td>
           </tr>
           <tr>
             <td class="row-label">XR</td>
-            <td class="row-max">78.9%<span class="count">722</span></td>
-            <td>8.9%<span class="count">81</span></td>
-            <td>8.9%<span class="count">81</span></td>
-            <td>3.4%<span class="count">31</span></td>
-            <td class="total-cell">915</td>
+            <td class="row-max">77.8%<span class="count">773</span></td>
+            <td>8.6%<span class="count">85</span></td>
+            <td>9.6%<span class="count">95</span></td>
+            <td>4.0%<span class="count">40</span></td>
+            <td class="total-cell">993</td>
           </tr>
           <tr>
             <td class="row-label">Unknown</td>
-            <td class="row-max">55.7%<span class="count">51,057</span></td>
-            <td>16.4%<span class="count">15,038</span></td>
-            <td>25.4%<span class="count">23,312</span></td>
-            <td>2.4%<span class="count">2,224</span></td>
-            <td class="total-cell">91,631</td>
+            <td class="row-max">63.8%<span class="count">15,610</span></td>
+            <td>9.2%<span class="count">2,250</span></td>
+            <td>24.3%<span class="count">5,940</span></td>
+            <td>2.7%<span class="count">672</span></td>
+            <td class="total-cell">24,472</td>
           </tr>
         </tbody>
       </table>
       <div style="margin-top:14px; background:var(--card-2); border-radius:var(--radius-sm); padding:10px 14px; font-size:11px; color:var(--text-3); line-height:1.5;">
-        Percentages are row totals (each board type sums to 100%). Lichess AI excluded (rounds to 0% across all rows). "Unknown" = older app versions where board_type wasn't recorded.
+        Percentages are row totals (each board type sums to 100%). Lichess AI excluded (rounds to 0% across all rows). 67,165 events (23.9%) with blank board_type were reassigned to the user's primary board (SDK bug — see Board Type Usage card).
       </div>
     </div>
   </div>
