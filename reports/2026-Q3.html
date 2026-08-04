@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GoChess Analytics — Q3 2026 Report</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <style>
+    :root {
+      --bg:          #111111;
+      --card:        #1a1a1a;
+      --card-2:      #222222;
+      --border:      #2a2a2a;
+      --orange:      #fe5f00;
+      --orange-dark: #7e2f00;
+      --orange-dim:  rgba(254,95,0,0.12);
+      --text-1:      #ffffff;
+      --text-2:      #b4b4b4;
+      --text-3:      #6b6b6b;
+      --green:       #80b83b;
+      --red:         #bd4025;
+      --radius:      10px;
+      --radius-sm:   6px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; }
+    body {
+      background: var(--bg);
+      color: var(--text-1);
+      font-family: 'Poppins', sans-serif;
+      font-weight: 400;
+      min-height: 100vh;
+      padding-bottom: 60px;
+    }
+    a { color: var(--orange); text-decoration: none; }
+
+    .header {
+      background: #111111;
+      border-bottom: 1px solid var(--border);
+      padding: 0 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 72px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .logo { display: flex; align-items: center; gap: 12px; }
+    .logo-icon {
+      width: 40px; height: 40px;
+      background: var(--orange);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px; font-weight: 800; color: white;
+    }
+    .logo-text { font-size: 18px; font-weight: 700; }
+    .logo-text span { color: var(--orange); }
+    .header-meta { display: flex; align-items: center; gap: 24px; }
+    .period-badge {
+      background: var(--orange-dim);
+      border: 1px solid var(--orange);
+      color: var(--orange);
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-size: 13px; font-weight: 600;
+    }
+    .date-range { color: var(--text-2); font-size: 13px; }
+
+    .container { max-width: 1280px; margin: 0 auto; padding: 32px 40px; }
+    .section { margin-bottom: 36px; }
+    .section-title {
+      font-size: 13px; font-weight: 600;
+      color: var(--text-3);
+      text-transform: uppercase; letter-spacing: 1.2px;
+      margin-bottom: 16px;
+    }
+
+    .kpi-grid { display: grid; gap: 16px; }
+    .kpi-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      position: relative; overflow: hidden;
+      transition: border-color 0.2s;
+    }
+    .kpi-card:hover { border-color: var(--orange); }
+    .kpi-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0;
+      height: 2px; background: var(--orange); opacity: 0; transition: opacity 0.2s;
+    }
+    .kpi-card:hover::before { opacity: 1; }
+    .kpi-label {
+      font-size: 11px; font-weight: 500;
+      color: var(--text-3);
+      text-transform: uppercase; letter-spacing: 0.8px;
+      margin-bottom: 10px;
+    }
+    .kpi-value {
+      font-size: 36px; font-weight: 700;
+      color: var(--text-1); line-height: 1; margin-bottom: 10px;
+    }
+    .kpi-value.accent { color: var(--orange); }
+    .kpi-delta {
+      display: inline-flex; align-items: center; gap: 4px;
+      font-size: 12px; font-weight: 600;
+      padding: 3px 8px; border-radius: 4px;
+    }
+    .kpi-delta.up   { background: rgba(128,184,59,0.15); color: var(--green); }
+    .kpi-delta.down { background: rgba(189,64,37,0.15);  color: var(--red); }
+    .kpi-delta.flat { background: rgba(107,107,107,0.15); color: var(--text-3); }
+    .kpi-sub  { font-size: 11px; color: var(--text-3); margin-top: 6px; }
+    .kpi-icon { position: absolute; bottom: 16px; right: 20px; font-size: 28px; opacity: 0.08; }
+
+    .row-2   { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .row-3-1 { display: grid; grid-template-columns: 2fr 1fr; gap: 16px; }
+
+    .chart-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+    }
+    .chart-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+    .chart-title { font-size: 15px; font-weight: 600; }
+    .chart-subtitle { font-size: 12px; color: var(--text-2); margin-top: 2px; }
+    .chart-legend { display: flex; gap: 16px; }
+    .legend-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text-2); }
+    .legend-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+    canvas { display: block; }
+
+    .compare-strip {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px 24px;
+      display: flex; gap: 40px; align-items: center; overflow-x: auto;
+    }
+    .compare-item { text-align: center; flex-shrink: 0; }
+    .compare-period { font-size: 10px; font-weight: 600; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 4px; }
+    .compare-val { font-size: 20px; font-weight: 700; }
+    .compare-divider { width: 1px; height: 40px; background: var(--border); flex-shrink: 0; }
+    .compare-metric-label { font-size: 11px; color: var(--text-3); margin-top: 4px; }
+
+    .retention-bars { display: flex; align-items: flex-end; gap: 12px; height: 160px; margin-top: 8px; }
+    .ret-bar-wrap { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 6px; height: 100%; justify-content: flex-end; }
+    .ret-bar-value { font-size: 13px; font-weight: 700; }
+    .ret-bar { width: 100%; border-radius: 6px 6px 0 0; min-height: 4px; }
+    .ret-bar-label { font-size: 11px; color: var(--text-2); font-weight: 500; }
+    .ret-bar-sublabel { font-size: 10px; color: var(--text-3); }
+
+    .mode-row { display: flex; flex-direction: column; gap: 14px; margin-top: 4px; }
+    .mode-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+    .mode-name { font-size: 13px; font-weight: 500; }
+    .mode-stats { display: flex; gap: 16px; }
+    .mode-stat { font-size: 12px; color: var(--text-2); }
+    .mode-stat strong { color: var(--text-1); font-weight: 600; }
+    .mode-bar-track { height: 6px; background: var(--card-2); border-radius: 3px; overflow: hidden; }
+    .mode-bar-fill { height: 100%; border-radius: 3px; }
+
+    .xtab { width: 100%; border-collapse: collapse; margin-top: 8px; font-size: 13px; }
+    .xtab th, .xtab td { padding: 12px 14px; text-align: right; border-bottom: 1px solid var(--border); }
+    .xtab th:first-child, .xtab td:first-child { text-align: left; }
+    .xtab thead th { color: var(--text-2); font-weight: 500; font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em; }
+    .xtab tbody tr:last-child td { border-bottom: none; }
+    .xtab tbody tr:hover { background: var(--card-2); }
+    .xtab tbody td { color: var(--text-1); }
+    .xtab .row-label { font-weight: 600; color: var(--text-1); }
+    .xtab .count { font-size: 11px; color: var(--text-3); margin-left: 4px; font-weight: 400; }
+    .xtab .total-cell { color: var(--text-2); font-weight: 500; }
+    .xtab .row-max { color: var(--orange); font-weight: 600; }
+
+    .country-list { display: flex; flex-direction: column; gap: 10px; }
+    .country-row { display: flex; align-items: center; gap: 10px; }
+    .country-rank { font-size: 11px; color: var(--text-3); width: 16px; text-align: right; flex-shrink: 0; }
+    .country-flag { font-size: 18px; flex-shrink: 0; }
+    .country-name { font-size: 13px; flex: 1; }
+    .country-bar-track { flex: 2; height: 5px; background: var(--card-2); border-radius: 3px; overflow: hidden; }
+    .country-bar-fill { height: 100%; background: var(--orange); border-radius: 3px; opacity: 0.7; }
+    .country-pct { font-size: 12px; font-weight: 600; color: var(--orange); width: 36px; text-align: right; flex-shrink: 0; }
+
+    .insights-card {
+      background: var(--card);
+      border: 1px solid var(--orange-dark);
+      border-radius: var(--radius);
+      padding: 24px;
+    }
+    .insights-header { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; }
+    .ai-badge { background: var(--orange); color: white; font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 4px; }
+    .insight-list { display: flex; flex-direction: column; gap: 14px; }
+    .insight-item { display: flex; gap: 12px; align-items: flex-start; }
+    .insight-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+    .insight-text { font-size: 13px; color: var(--text-2); line-height: 1.55; }
+    .insight-text strong { color: var(--text-1); font-weight: 600; }
+    .insight-text .highlight { color: var(--orange); font-weight: 600; }
+    .insight-text .warn { color: #e8a000; font-weight: 600; }
+    .insight-text .good { color: var(--green); font-weight: 600; }
+
+    .footer { text-align: center; padding: 32px; color: var(--text-3); font-size: 12px; border-top: 1px solid var(--border); margin-top: 16px; }
+    .footer a { color: var(--text-3); }
+    .footer a:hover { color: var(--orange); }
+
+    @media (max-width: 900px) {
+      .kpi-grid { grid-template-columns: repeat(2, 1fr) !important; }
+      .row-2, .row-3-1 { grid-template-columns: 1fr; }
+      .container { padding: 20px; }
+      .header { padding: 0 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="header">
+  <div class="logo">
+    <div class="logo-icon">♟</div>
+    <div>
+      <div class="logo-text">Go<span>Chess</span> Analytics</div>
+    </div>
+  </div>
+  <div class="header-meta">
+    <span class="date-range">Dec 29 – Jul 26, 2026</span>
+    <span class="period-badge">Q3 2026 · Analytics Report</span>
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- KPI CARDS -->
+  <div class="section">
+    <div class="section-title">Key Metrics — Q3 2026 · iOS + Android</div>
+    <div style="font-size:11px; color:var(--text-3); margin-top:-8px; margin-bottom:16px; line-height:1.55; max-width:880px;">
+      User counts cover <strong style="color:var(--text-2)">23,956 confirmed users</strong>
+      — anyone who finished a game, started a game, or spent 5+ minutes in the app.
+      <strong style="color:var(--text-2)">3,441 (12.6%) tap-and-bounce visitors excluded</strong>
+      as likely pre-purchase or accidental installs (no game intent &amp; under 5min total app time).
+    </div>
+    <div class="kpi-grid" style="grid-template-columns: repeat(5, 1fr);">
+      
+      <div class="kpi-card">
+        <div class="kpi-label">Daily Active Users (avg)</div>
+        <div class="kpi-value">634</div>
+        <span class="kpi-delta flat">— peak: 1,585</span>
+        <div class="kpi-sub">iOS 73.2% · Android 26.8%</div>
+        <div class="kpi-icon">👥</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Weekly Active Users (avg)</div>
+        <div class="kpi-value accent">2,419</div>
+        <span class="kpi-delta flat">— peak 2026-W01: 5,193</span>
+        <div class="kpi-sub">MAU: 5,630 total</div>
+        <div class="kpi-icon">📈</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">MAU (monthly active)</div>
+        <div class="kpi-value">5,630</div>
+        <span class="kpi-delta flat">— last 30 days of period</span>
+        <div class="kpi-sub">Phone 80.5% · Tablet 19.5%</div>
+        <div class="kpi-icon">📱</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Total Games Played</div>
+        <div class="kpi-value">230,701</div>
+        <span class="kpi-delta up">▲ 11.5 games / active player</span>
+        <div class="kpi-sub">19,978 active players</div>
+        <div class="kpi-icon">♟</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">New Installs</div>
+        <div class="kpi-value">19,062</div>
+        <span class="kpi-delta flat">— iOS: 13,685 · Android: 5,377</span>
+        <div class="kpi-sub">17.6% never played a game</div>
+        <div class="kpi-icon">📲</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SESSION QUALITY STRIP -->
+  <div class="section">
+    <div class="section-title">Session Quality & Engagement</div>
+    <div class="compare-strip">
+      
+      <div class="compare-item">
+        <div class="compare-period">Median Session</div>
+        <div class="compare-val" style="color:var(--orange)">1m 21s</div>
+        <div class="compare-metric-label">typical session</div>
+      </div>
+      <div class="compare-divider"></div>
+      <div class="compare-item">
+        <div class="compare-period">Mean Session</div>
+        <div class="compare-val" style="color:var(--text-1)">7m 31s</div>
+        <div class="compare-metric-label">avg incl. long games</div>
+      </div>
+      <div class="compare-divider"></div>
+      <div class="compare-item">
+        <div class="compare-period">Total Sessions</div>
+        <div class="compare-val" style="color:var(--text-1)">216,071</div>
+        <div class="compare-metric-label">all platforms</div>
+      </div>
+      <div class="compare-divider"></div>
+      <div class="compare-item">
+        <div class="compare-period">Active Players</div>
+        <div class="compare-val" style="color:var(--text-1)">19,978</div>
+        <div class="compare-metric-label">played ≥1 game</div>
+      </div>
+      <div class="compare-divider"></div>
+      <div class="compare-item">
+        <div class="compare-period">Games / Player</div>
+        <div class="compare-val" style="color:var(--orange)">11.5</div>
+        <div class="compare-metric-label">avg engagement</div>
+      </div>
+      <div class="compare-divider"></div>
+      <div class="compare-item">
+        <div class="compare-period">App-Only Games</div>
+        <div class="compare-val" style="color:var(--red)">9.0%</div>
+        <div class="compare-metric-label">no board connected</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TREND CHART + AI INSIGHTS -->
+  <div class="section">
+    <div class="row-3-1">
+      <div class="chart-card">
+        <div class="chart-header">
+          <div>
+            <div class="chart-title">DAU & WAU Trend</div>
+            <div class="chart-subtitle">Weekly — iOS DevToDev data · W01 → W30</div>
+          </div>
+          <div class="chart-legend">
+            <div class="legend-item"><div class="legend-dot" style="background:#fe5f00"></div> WAU</div>
+            <div class="legend-item"><div class="legend-dot" style="background:#b4b4b4"></div> DAU avg</div>
+          </div>
+        </div>
+        <canvas id="trendChart" height="90"></canvas>
+      </div>
+
+      <div class="insights-card">
+        <div class="insights-header">
+          <div class="chart-title">AI Insights</div>
+          <div class="ai-badge">AI</div>
+        </div>
+        <div class="insight-list">
+          
+          <div class="insight-item">
+            <div class="insight-icon">⚠️</div>
+            <div class="insight-text"><span class="warn">Retention cliff at Install→W1</span> (100.0% → 54.0%) is the biggest churn risk. Users who survive this window need structured re-engagement.</div>
+          </div>
+
+          <div class="insight-item">
+            <div class="insight-icon">♟</div>
+            <div class="insight-text"><span class="highlight">Chess.com drives 3.9× more games per user</span> (18.1 vs 4.7 for F2F). Prioritise this mode in onboarding for higher retention.</div>
+          </div>
+
+          <div class="insight-item">
+            <div class="insight-icon">📱</div>
+            <div class="insight-text"><span class="warn">9.0% of game sessions are started without a connected GoChess board</span> (32,675 games). 13.3% of active players have <em>never</em> connected a board — likely pre-purchase evaluators or users with connection issues.</div>
+          </div>
+
+          <div class="insight-item">
+            <div class="insight-icon">📱</div>
+            <div class="insight-text"><strong>Mini board is #1 at 63% of game_start events</strong> (after backfilling 24.1% of blank board_type events to each user's primary board). Remaining "Unknown" users have never recorded a board_type — see Board Type Usage card.</div>
+          </div>
+
+          <div class="insight-item">
+            <div class="insight-icon">🌍</div>
+            <div class="insight-text"><span class="good">United States leads at 41.4%</span> of the user base. Switzerland (3.4%) over-indexes on engagement — premium market signal.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RETENTION + GAME MODES -->
+  <div class="section">
+    <div class="row-2">
+      <div class="chart-card">
+        <div class="chart-header">
+          <div>
+            <div class="chart-title">Retention Funnel</div>
+            <div class="chart-subtitle">Q3 2026 cohort · 16,761 installs · iOS + Android</div>
+          </div>
+        </div>
+        <div class="retention-bars">
+          
+          <div class="ret-bar-wrap">
+            <div class="ret-bar-value">100.0%</div>
+            <div class="ret-bar" style="height:100.0%; background:var(--orange)"></div>
+            <div class="ret-bar-label">W0</div>
+            <div class="ret-bar-sublabel">Install</div>
+          </div>
+          <div class="ret-bar-wrap">
+            <div class="ret-bar-value">54.0%</div>
+            <div class="ret-bar" style="height:54.0%; background:var(--orange)"></div>
+            <div class="ret-bar-label">W1</div>
+            <div class="ret-bar-sublabel">Week 1</div>
+          </div>
+          <div class="ret-bar-wrap">
+            <div class="ret-bar-value">25.2%</div>
+            <div class="ret-bar" style="height:25.2%; background:var(--orange)"></div>
+            <div class="ret-bar-label">W2</div>
+            <div class="ret-bar-sublabel">Week 2</div>
+          </div>
+          <div class="ret-bar-wrap">
+            <div class="ret-bar-value">19.1%</div>
+            <div class="ret-bar" style="height:19.1%; background:var(--red)"></div>
+            <div class="ret-bar-label">W3</div>
+            <div class="ret-bar-sublabel">Week 3</div>
+          </div>
+          <div class="ret-bar-wrap">
+            <div class="ret-bar-value">15.6%</div>
+            <div class="ret-bar" style="height:15.6%; background:var(--red)"></div>
+            <div class="ret-bar-label">W4</div>
+            <div class="ret-bar-sublabel">Week 4</div>
+          </div>
+          <div class="ret-bar-wrap">
+            <div class="ret-bar-value">8.7%</div>
+            <div class="ret-bar" style="height:8.7%; background:var(--red)"></div>
+            <div class="ret-bar-label">W8</div>
+            <div class="ret-bar-sublabel">Week 8</div>
+          </div>
+          <div class="ret-bar-wrap">
+            <div class="ret-bar-value">6.0%</div>
+            <div class="ret-bar" style="height:6.0%; background:var(--red)"></div>
+            <div class="ret-bar-label">W12</div>
+            <div class="ret-bar-sublabel">Week 12</div>
+          </div>
+        </div>
+        <div style="margin-top:14px; background:var(--card-2); border-radius:var(--radius-sm); padding:10px 14px; font-size:11px; color:var(--text-3); line-height:1.5;">
+          W1=54.0% · W2=25.2% · W3=19.1% · W4=15.6% · W8=8.7% · W12=6.0%
+          &nbsp;·&nbsp; 17.6% of cohort never played a game
+        </div>
+      </div>
+
+      <div class="chart-card">
+        <div class="chart-header">
+          <div>
+            <div class="chart-title">Game Modes</div>
+            <div class="chart-subtitle">Q3 2026 · 230,701 games · % of 19,978 active players (modes overlap)</div>
+          </div>
+        </div>
+        <div class="mode-row">
+          
+          <div class="mode-item">
+            <div class="mode-header">
+              <span class="mode-name">♟ GoChess AI</span>
+              <div class="mode-stats">
+                <span class="mode-stat"><strong>112,106</strong> games</span>
+                <span class="mode-stat"><strong>14,182</strong> users <strong style="color:var(--text-1)">(71.0%)</strong></span>
+                <span class="mode-stat" style="color:var(--text-3)">7.9/user</span>
+              </div>
+            </div>
+            <div class="mode-bar-track">
+              <div class="mode-bar-fill" style="width:48.6%; background:#fe5f00"></div>
+            </div>
+          </div>
+          <div class="mode-item">
+            <div class="mode-header">
+              <span class="mode-name">🤝 Face to Face</span>
+              <div class="mode-stats">
+                <span class="mode-stat"><strong>56,249</strong> games</span>
+                <span class="mode-stat"><strong>11,918</strong> users <strong style="color:var(--text-1)">(59.7%)</strong></span>
+                <span class="mode-stat" style="color:var(--text-3)">4.7/user</span>
+              </div>
+            </div>
+            <div class="mode-bar-track">
+              <div class="mode-bar-fill" style="width:24.4%; background:#b4b4b4"></div>
+            </div>
+          </div>
+          <div class="mode-item">
+            <div class="mode-header">
+              <span class="mode-name">🌐 Chess.com</span>
+              <div class="mode-stats">
+                <span class="mode-stat"><strong>53,684</strong> games</span>
+                <span class="mode-stat"><strong>2,972</strong> users <strong style="color:var(--text-1)">(14.9%)</strong></span>
+                <span class="mode-stat" style="color:var(--green)">18.1/user</span>
+              </div>
+            </div>
+            <div class="mode-bar-track">
+              <div class="mode-bar-fill" style="width:23.3%; background:#5b9bd5"></div>
+            </div>
+          </div>
+          <div class="mode-item">
+            <div class="mode-header">
+              <span class="mode-name">🐴 Lichess</span>
+              <div class="mode-stats">
+                <span class="mode-stat"><strong>8,588</strong> games</span>
+                <span class="mode-stat"><strong>920</strong> users <strong style="color:var(--text-1)">(4.6%)</strong></span>
+                <span class="mode-stat" style="color:var(--text-3)">9.3/user</span>
+              </div>
+            </div>
+            <div class="mode-bar-track">
+              <div class="mode-bar-fill" style="width:3.7%; background:#7e7e7e"></div>
+            </div>
+          </div>
+          <div class="mode-item">
+            <div class="mode-header">
+              <span class="mode-name">🤖 Lichess AI</span>
+              <div class="mode-stats">
+                <span class="mode-stat"><strong>74</strong> games</span>
+                <span class="mode-stat"><strong>23</strong> users <strong style="color:var(--text-1)">(0.1%)</strong></span>
+                <span class="mode-stat" style="color:var(--text-3)">3.2/user</span>
+              </div>
+            </div>
+            <div class="mode-bar-track">
+              <div class="mode-bar-fill" style="width:0.0%; background:#555555"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- COUNTRIES + INSTALL TREND -->
+  <div class="section">
+    <div class="row-2">
+      <div class="chart-card">
+        <div class="chart-header">
+          <div>
+            <div class="chart-title">Top Countries</div>
+            <div class="chart-subtitle">Q3 2026 · by unique users</div>
+          </div>
+        </div>
+        <div class="country-list">
+          
+          <div class="country-row">
+            <div class="country-rank">1</div>
+            <div class="country-flag">🇺🇸</div>
+            <div class="country-name">United States</div>
+            <div class="country-bar-track"><div class="country-bar-fill" style="width:100.0%"></div></div>
+            <div class="country-pct">41.4%</div>
+          </div>
+          <div class="country-row">
+            <div class="country-rank">2</div>
+            <div class="country-flag">🇨🇦</div>
+            <div class="country-name">Canada</div>
+            <div class="country-bar-track"><div class="country-bar-fill" style="width:13.9%"></div></div>
+            <div class="country-pct">5.7%</div>
+          </div>
+          <div class="country-row">
+            <div class="country-rank">3</div>
+            <div class="country-flag">🇦🇺</div>
+            <div class="country-name">Australia</div>
+            <div class="country-bar-track"><div class="country-bar-fill" style="width:11.5%"></div></div>
+            <div class="country-pct">4.8%</div>
+          </div>
+          <div class="country-row">
+            <div class="country-rank">4</div>
+            <div class="country-flag">🇬🇧</div>
+            <div class="country-name">United Kingdom</div>
+            <div class="country-bar-track"><div class="country-bar-fill" style="width:10.7%"></div></div>
+            <div class="country-pct">4.4%</div>
+          </div>
+          <div class="country-row">
+            <div class="country-rank">5</div>
+            <div class="country-flag">🇨🇭</div>
+            <div class="country-name">Switzerland</div>
+            <div class="country-bar-track"><div class="country-bar-fill" style="width:8.3%"></div></div>
+            <div class="country-pct">3.4%</div>
+          </div>
+          <div class="country-row">
+            <div class="country-rank">6</div>
+            <div class="country-flag">🇲🇽</div>
+            <div class="country-name">Mexico</div>
+            <div class="country-bar-track"><div class="country-bar-fill" style="width:6.2%"></div></div>
+            <div class="country-pct">2.6%</div>
+          </div>
+          <div class="country-row">
+            <div class="country-rank">7</div>
+            <div class="country-flag">🇩🇪</div>
+            <div class="country-name">Germany</div>
+            <div class="country-bar-track"><div class="country-bar-fill" style="width:6.2%"></div></div>
+            <div class="country-pct">2.6%</div>
+          </div>
+          <div class="country-row">
+            <div class="country-rank">8</div>
+            <div class="country-flag">🇳🇱</div>
+            <div class="country-name">Netherlands</div>
+            <div class="country-bar-track"><div class="country-bar-fill" style="width:6.0%"></div></div>
+            <div class="country-pct">2.5%</div>
+          </div>
+          <div class="country-row">
+            <div class="country-rank">9</div>
+            <div class="country-flag">🇫🇷</div>
+            <div class="country-name">France</div>
+            <div class="country-bar-track"><div class="country-bar-fill" style="width:4.2%"></div></div>
+            <div class="country-pct">1.8%</div>
+          </div>
+          <div class="country-row">
+            <div class="country-rank">10</div>
+            <div class="country-flag">🌍</div>
+            <div class="country-name">AE</div>
+            <div class="country-bar-track"><div class="country-bar-fill" style="width:4.0%"></div></div>
+            <div class="country-pct">1.7%</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="chart-card">
+        <div class="chart-header">
+          <div>
+            <div class="chart-title">Install Trend</div>
+            <div class="chart-subtitle">Weekly new installs · iOS + Android</div>
+          </div>
+        </div>
+        <canvas id="installChart" height="130"></canvas>
+        <div style="margin-top:16px; display:flex; gap:12px;">
+          <div style="flex:1; text-align:center; background:var(--card-2); border-radius:var(--radius-sm); padding:10px;">
+            <div style="font-size:10px; color:var(--text-3); text-transform:uppercase; letter-spacing:0.8px;">Peak</div>
+            <div style="font-size:22px; font-weight:700;">1,880</div>
+            <div style="font-size:10px; color:var(--text-3);">2026-W01</div>
+          </div>
+          <div style="flex:1; text-align:center; background:var(--orange-dim); border:1px solid rgba(254,95,0,0.3); border-radius:var(--radius-sm); padding:10px;">
+            <div style="font-size:10px; color:var(--text-3); text-transform:uppercase; letter-spacing:0.8px;">Total Q3 2026</div>
+            <div style="font-size:22px; font-weight:700; color:var(--orange);">19,062</div>
+            <div style="font-size:10px; color:var(--text-3);">iOS + Android</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DEVICE & BOARD TYPES -->
+  <div class="section">
+    <div class="section-title">Device & Platform Split</div>
+    <div class="row-2">
+      <div class="chart-card">
+        <div class="chart-header">
+          <div>
+            <div class="chart-title">Platform Breakdown</div>
+            <div class="chart-subtitle">Active in last 90 days · 11,261 users</div>
+          </div>
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:4px;">
+          
+        <div style="background:var(--card-2); border-radius:var(--radius-sm); padding:16px; text-align:center;">
+          <div style="font-size:11px; color:var(--text-3); text-transform:uppercase; letter-spacing:0.8px; margin-bottom:6px;">iOS</div>
+          <div style="font-size:32px; font-weight:700; color:var(--orange);">73.2%</div>
+          <div style="font-size:12px; color:var(--text-2); margin-top:4px;">8,238 users</div>
+        </div>
+        <div style="background:var(--card-2); border-radius:var(--radius-sm); padding:16px; text-align:center;">
+          <div style="font-size:11px; color:var(--text-3); text-transform:uppercase; letter-spacing:0.8px; margin-bottom:6px;">Android</div>
+          <div style="font-size:32px; font-weight:700; color:var(--text-2);">26.8%</div>
+          <div style="font-size:12px; color:var(--text-2); margin-top:4px;">3,023 users</div>
+        </div>
+        <div style="background:var(--card-2); border-radius:var(--radius-sm); padding:16px; text-align:center;">
+          <div style="font-size:11px; color:var(--text-3); text-transform:uppercase; letter-spacing:0.8px; margin-bottom:6px;">Phone</div>
+          <div style="font-size:32px; font-weight:700; color:var(--text-1);">80.5%</div>
+          <div style="font-size:12px; color:var(--text-2); margin-top:4px;">9,066 users</div>
+        </div>
+        <div style="background:var(--card-2); border-radius:var(--radius-sm); padding:16px; text-align:center;">
+          <div style="font-size:11px; color:var(--text-3); text-transform:uppercase; letter-spacing:0.8px; margin-bottom:6px;">Tablet</div>
+          <div style="font-size:32px; font-weight:700; color:var(--text-1);">19.5%</div>
+          <div style="font-size:12px; color:var(--text-2); margin-top:4px;">2,195 users</div>
+        </div>
+        </div>
+        <div style="margin-top:14px; background:var(--card-2); border-radius:var(--radius-sm); padding:10px 14px; font-size:11px; color:var(--text-3); line-height:1.5;">
+          Lifetime cumulative counts overstate iOS share — iOS was tracked from W01 (Dec 29), Android only from W09 (Mar 1). Using a 90-day active window gives both platforms equal coverage and matches Firebase methodology.
+        </div>
+      </div>
+
+      <div class="chart-card">
+        <div class="chart-header">
+          <div>
+            <div class="chart-title">Board Type Usage</div>
+            <div class="chart-subtitle">363,487 game_start events · Q3 2026</div>
+          </div>
+        </div>
+        <div class="mode-row">
+          
+          <div class="mode-item">
+            <div class="mode-header">
+              <span class="mode-name">♟ Mini</span>
+              <div class="mode-stats">
+                <span class="mode-stat"><strong>227,732</strong> games</span>
+                <span class="mode-stat"><strong>13,574</strong> users</span>
+                <span class="mode-stat" style="color:var(--text-3)">16.8/user/mo</span>
+              </div>
+            </div>
+            <div class="mode-bar-track">
+              <div class="mode-bar-fill" style="width:62.7%; background:#fe5f00"></div>
+            </div>
+          </div>
+          <div class="mode-item">
+            <div class="mode-header">
+              <span class="mode-name">♟ Lite</span>
+              <div class="mode-stats">
+                <span class="mode-stat"><strong>100,226</strong> games</span>
+                <span class="mode-stat"><strong>6,540</strong> users</span>
+                <span class="mode-stat" style="color:var(--text-3)">15.3/user/mo</span>
+              </div>
+            </div>
+            <div class="mode-bar-track">
+              <div class="mode-bar-fill" style="width:27.6%; background:#5b9bd5"></div>
+            </div>
+          </div>
+          <div class="mode-item">
+            <div class="mode-header">
+              <span class="mode-name">♟ Unknown</span>
+              <div class="mode-stats">
+                <span class="mode-stat"><strong>32,675</strong> games</span>
+                <span class="mode-stat"><strong>3,092</strong> users</span>
+                <span class="mode-stat" style="color:var(--text-3)">10.6/user/mo</span>
+              </div>
+            </div>
+            <div class="mode-bar-track">
+              <div class="mode-bar-fill" style="width:9.0%; background:#7e7e7e"></div>
+            </div>
+          </div>
+          <div class="mode-item">
+            <div class="mode-header">
+              <span class="mode-name">🤖 XR</span>
+              <div class="mode-stats">
+                <span class="mode-stat"><strong>2,854</strong> games</span>
+                <span class="mode-stat"><strong>191</strong> users</span>
+                <span class="mode-stat" style="color:var(--text-3)">14.9/user/mo</span>
+              </div>
+            </div>
+            <div class="mode-bar-track">
+              <div class="mode-bar-fill" style="width:0.8%; background:#555555"></div>
+            </div>
+          </div>
+        </div>
+        <div style="margin-top:14px; background:var(--card-2); border-radius:var(--radius-sm); padding:10px 14px; font-size:11px; color:var(--text-3); line-height:1.5;">
+          <strong style='color:var(--text-2)'>Data quality:</strong> 87,623 events (24.1%) had blank <code>board_type</code> from a known SDK bug (affects ~30% of online-play game_starts in every app version, not just old builds) — these were reassigned to the user's primary board based on their history. Remaining 'Unknown' = users who have <em>never</em> recorded a board_type event.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  
+  <div class="section">
+    <div class="chart-card">
+      <div class="chart-header">
+        <div>
+          <div class="chart-title">Game Mode by Board Type</div>
+          <div class="chart-subtitle">Q3 2026 · 363,439 game_start events · row percentages</div>
+        </div>
+      </div>
+      <table class="xtab">
+        <thead>
+          <tr>
+            <th>Board</th>
+            <th>GoChess AI (bot)</th><th>F2F</th><th>Chess.com (online)</th><th>Lichess (online)</th>
+            <th>Total events</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="row-label">Mini</td>
+            <td class="row-max">50.5%<span class="count">115,014</span></td>
+            <td>27.6%<span class="count">62,759</span></td>
+            <td>19.4%<span class="count">44,254</span></td>
+            <td>2.5%<span class="count">5,662</span></td>
+            <td class="total-cell">227,689</td>
+          </tr>
+          <tr>
+            <td class="row-label">Lite</td>
+            <td class="row-max">49.4%<span class="count">49,536</span></td>
+            <td>32.1%<span class="count">32,127</span></td>
+            <td>16.7%<span class="count">16,758</span></td>
+            <td>1.8%<span class="count">1,802</span></td>
+            <td class="total-cell">100,223</td>
+          </tr>
+          <tr>
+            <td class="row-label">XR</td>
+            <td class="row-max">76.2%<span class="count">2,176</span></td>
+            <td>8.7%<span class="count">247</span></td>
+            <td>12.9%<span class="count">367</span></td>
+            <td>2.2%<span class="count">64</span></td>
+            <td class="total-cell">2,854</td>
+          </tr>
+          <tr>
+            <td class="row-label">Unknown</td>
+            <td class="row-max">63.1%<span class="count">20,629</span></td>
+            <td>8.6%<span class="count">2,810</span></td>
+            <td>21.6%<span class="count">7,061</span></td>
+            <td>6.7%<span class="count">2,173</span></td>
+            <td class="total-cell">32,673</td>
+          </tr>
+        </tbody>
+      </table>
+      <div style="margin-top:14px; background:var(--card-2); border-radius:var(--radius-sm); padding:10px 14px; font-size:11px; color:var(--text-3); line-height:1.5;">
+        Percentages are row totals (each board type sums to 100%). Lichess AI excluded (rounds to 0% across all rows). 87,623 events (24.1%) with blank board_type were reassigned to the user's primary board (SDK bug — see Board Type Usage card).
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  GoChess Analytics · Q3 2026 (Dec 29 – Jul 26, 2026) ·
+  Generated Aug 4, 2026 from raw DevToDev exports ·
+  Real-user filter applied (dropped 3,441 of 27,397 raw users, 12.6%) ·
+  <a href="https://github.com/AKparticula/gochess-analytics" target="_blank">Data repo →</a>
+  &nbsp;·&nbsp;
+  <a href="https://lookerstudio.google.com/reporting/50a3fc0a-fd59-4c85-be2c-ea3855ae9008" target="_blank">Live Dashboard →</a>
+</div>
+
+<script>
+  const orange = '#fe5f00';
+  const gray   = '#b4b4b4';
+  const grid   = '#2a2a2a';
+  const text2  = '#b4b4b4';
+  Chart.defaults.color = text2;
+  Chart.defaults.font.family = "'Poppins', sans-serif";
+  Chart.defaults.font.size = 11;
+
+  const weeks    = ["W01", "W02", "W03", "W04", "W05", "W06", "W07", "W08", "W09", "W10", "W11", "W12", "W13", "W14", "W15", "W16", "W17", "W18", "W19", "W20", "W22", "W23", "W24", "W25", "W26", "W27", "W28", "W29", "W30"];
+  const wauData  = [5193, 3674, 3409, 3326, 3018, 2765, 2751, 2798, 2462, 2368, 2207, 1937, 2060, 2163, 2055, 1948, 1859, 1910, 1939, 2007, 1929, 1967, 1966, 2074, 2170, 2221, 2002, 1979, 1997];
+  const dauData  = [1444, 999, 917, 866, 789, 729, 708, 734, 645, 599, 589, 501, 546, 546, 533, 504, 482, 506, 514, 537, 519, 529, 513, 536, 560, 574, 544, 543, 530];
+  const instData = [1880, 1061, 878, 746, 719, 589, 669, 643, 508, 863, 686, 545, 574, 618, 539, 498, 440, 461, 554, 552, 541, 507, 513, 662, 670, 649, 535, 465, 497];
+  const instColors = ["rgba(254,95,0,0.25)", "rgba(254,95,0,0.25)", "rgba(254,95,0,0.25)", "rgba(254,95,0,0.25)", "rgba(254,95,0,0.25)", "rgba(254,95,0,0.25)", "rgba(254,95,0,0.25)", "rgba(254,95,0,0.25)", "rgba(254,95,0,0.25)", "rgba(254,95,0,0.25)", "rgba(254,95,0,0.25)", "rgba(254,95,0,0.25)", "rgba(254,95,0,0.25)", "rgba(254,95,0,0.25)", "rgba(254,95,0,0.25)", "rgba(254,95,0,0.25)", "rgba(254,95,0,0.25)", "rgba(254,95,0,0.25)", "rgba(254,95,0,0.25)", "rgba(254,95,0,0.25)", "rgba(254,95,0,0.25)", "rgba(254,95,0,0.25)", "rgba(254,95,0,0.25)", "rgba(254,95,0,0.25)", "rgba(254,95,0,0.25)", "rgba(254,95,0,0.25)", "rgba(254,95,0,0.25)", "rgba(254,95,0,0.25)", "#fe5f00"];
+
+  new Chart(document.getElementById('trendChart'), {
+    type: 'line',
+    data: {
+      labels: weeks,
+      datasets: [
+        { label: 'WAU', data: wauData, borderColor: orange,
+           backgroundColor: 'rgba(254,95,0,0.08)', borderWidth: 2.5,
+           pointBackgroundColor: orange, pointRadius: 4, fill: true, tension: 0.3, yAxisID: 'y' },
+        { label: 'DAU avg', data: dauData, borderColor: gray,
+           backgroundColor: 'transparent', borderWidth: 1.5,
+           pointBackgroundColor: gray, pointRadius: 3, borderDash: [4,3],
+           fill: false, tension: 0.3, yAxisID: 'y1' }
+      ]
+    },
+    options: {
+      responsive: true,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: { display: false },
+        tooltip: { backgroundColor:'#1a1a1a', borderColor:'#2a2a2a', borderWidth:1,
+                    titleColor:'#fff', bodyColor:text2, padding:10 }
+      },
+      scales: {
+        x:  { grid: { color: grid }, ticks: { color: text2 } },
+        y:  { position:'left',  grid: { color: grid }, ticks: { color: orange },
+               title: { display:true, text:'WAU', color:orange, font:{ size:10 } } },
+        y1: { position:'right', grid: { drawOnChartArea:false }, ticks: { color: gray },
+               title: { display:true, text:'DAU', color:gray,   font:{ size:10 } } }
+      }
+    }
+  });
+
+  new Chart(document.getElementById('installChart'), {
+    type: 'bar',
+    data: {
+      labels: weeks,
+      datasets: [{ label:'Installs', data:instData, backgroundColor:instColors, borderRadius:4 }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { display: false },
+        tooltip: { backgroundColor:'#1a1a1a', borderColor:'#2a2a2a', borderWidth:1,
+                    titleColor:'#fff', bodyColor:text2, padding:10 }
+      },
+      scales: {
+        x: { grid: { display:false }, ticks: { color:text2 } },
+        y: { grid: { color:grid },    ticks: { color:text2 } }
+      }
+    }
+  });
+</script>
+</body>
+</html>
